@@ -5,8 +5,6 @@ import { useApp } from '../contexts/AppContext';
 
 export const Footer: React.FC = () => {
   const { setCurrentPage } = useApp();
-
-
   return (
     <footer className="border-t bg-background">
       <div className="container mx-auto px-4 py-12">
