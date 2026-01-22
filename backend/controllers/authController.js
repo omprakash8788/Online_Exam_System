@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 
 const createToken = (user) => {
   return jwt.sign(
-    { id: user._id, email: user.email, role: user.role },
+    {user},
     process.env.JWT_SECRET,
     { expiresIn: '7d' }
   );
@@ -142,7 +142,45 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getMe = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const logout = async(req,res) => {
+  try{
+    res.clearCookie("token",{
+      httpOnly : true,
+      sameSite: "lax",
+      secure: false
+    });
+    res.status(200).json({
+      success:true,
+      message: "Logged out successfully."
+    })
+  }catch(err){
+    return res.status(400).json({
+      success:false,
+      message: error
+    })
+  }
+}
 
 export default {
-  signup, login, updateUser
+  signup, login, updateUser, getMe, logout
 };

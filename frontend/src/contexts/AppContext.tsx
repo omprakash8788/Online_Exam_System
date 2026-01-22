@@ -68,6 +68,8 @@ interface AppContextType {
   currentTestQuestions: Question[];
   setCurrentTestQuestions: (questions: Question[]) => void;
   testResults: TestResult[];
+  checkAuth: () => void;
+  isAuthenticated : boolean;
   addTestResult: (result: TestResult) => void;
 }
 
@@ -84,11 +86,13 @@ export const useApp = () => {
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  console.log("user data",user)
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
   const [currentTestQuestions, setCurrentTestQuestions] = useState<Question[]>([]);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -96,6 +100,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setTheme(savedTheme);
       document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     }
+    checkAuth();
   }, []);
 
   // const login = (email: string, password: string, role: 'student' | 'admin' = 'student') => {
@@ -147,10 +152,52 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }
 };
 
+const checkAuth = async() => {
+  try{
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/me`, {
+        method: "GET",
+        credentials: "include"
+      });
 
-  const logout = () => {
-    setUser(null);
-    setCurrentPage('home');
+      if (!res.ok) throw new Error("Not authenticated");
+
+      const data = await res.json();
+
+      if(data.success){
+        setIsAuthenticated(true);
+        setUser(data.user.user);
+      }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "Network error",
+    };
+  }
+}
+
+  const logout = async() => {
+    try{
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/logout`, {
+          method: "POST",
+          credentials: "include"
+        });
+
+        if (!res.ok) throw new Error("Not authenticated");
+
+        const data = await res.json();
+
+        if(data.success){
+          setUser(null);
+          setIsAuthenticated(false);
+          setCurrentPage('home');
+        }
+    }catch(error : any){
+      return {
+        success: false,
+        message: error.message || "Network error",
+      };
+    }
+   
   };
 
   // const signup = (name: string, email: string, password: string, role: 'student' | 'admin') => {
@@ -208,11 +255,15 @@ const signup = async (
     setTestResults((prev) => [result, ...prev]);
   };
 
+
+
   return (
     <AppContext.Provider
       value={{
         user,
         login,
+        checkAuth,
+        isAuthenticated,
         logout,
         signup,
         theme,
