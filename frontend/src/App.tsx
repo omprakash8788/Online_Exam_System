@@ -16,27 +16,9 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Toaster } from './components/ui/sonner';
-// import { AppProvider, useApp } from './contexts/AppContext';
-// import { Header } from './components/Header';
-// import { Footer } from './components/Footer';
-// import { HomePage } from './pages/HomePage';
-// import { LoginPage } from './pages/LoginPage';
-// import { SignUpPage } from './pages/SignUpPage';
-// import { DashboardPage } from './pages/DashboardPage';
-// import { AllTestsPage } from './pages/AllTestsPage';
-// import { TestInstructionsPage } from './pages/TestInstructionsPage';
-// import { TestInterfacePage } from './pages/TestInterfacePage';
-// import { TestResultPage } from './pages/TestResultPage';
-// import { ProfilePage } from './pages/ProfilePage';
-// import { AdminPanel } from './pages/AdminPanel';
-// import { AboutPage } from './pages/AboutPage';
-// import { ContactPage } from './pages/ContactPage';
-// import { NotFoundPage } from './pages/NotFoundPage';
-// import { Toaster } from './components/ui/sonner';
 
 const AppContent: React.FC = () => {
   const { currentPage } = useApp();
-
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
@@ -69,12 +51,9 @@ const AppContent: React.FC = () => {
         return <NotFoundPage />;
     }
   };
-
-  // Don't show header/footer on test interface page for better focus
   const hideHeaderFooter = currentPage === 'test-interface';
-
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col px-8">
       {!hideHeaderFooter && <Header />}
       <main className="flex-1">
         {renderPage()}
