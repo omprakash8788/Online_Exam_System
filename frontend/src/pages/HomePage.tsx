@@ -113,7 +113,7 @@ export const HomePage: React.FC = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="mb-12 text-center">
           <h2 className="text-3xl">Why Choose MockTest?</h2>
-          <p className="text-muted-foreground mt-2">
+          <p className="text-muted-foreground mt-2 text-gray-500">
             Everything you need to prepare for your exams
           </p>
         </div>
@@ -124,7 +124,7 @@ export const HomePage: React.FC = () => {
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
               <h3 className="mb-2">Comprehensive Tests</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground text-gray-500">
                 Wide range of subjects and difficulty levels to match your needs
               </p>
             </CardContent>
@@ -135,7 +135,7 @@ export const HomePage: React.FC = () => {
                 <TrendingUp className="h-6 w-6 text-primary" />
               </div>
               <h3 className="mb-2">Track Progress</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground text-gray-500">
                 Monitor your improvement with detailed analytics and insights
               </p>
             </CardContent>
@@ -146,7 +146,7 @@ export const HomePage: React.FC = () => {
                 <Trophy className="h-6 w-6 text-primary" />
               </div>
               <h3 className="mb-2">Instant Results</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground text-gray-500">
                 Get immediate feedback with detailed explanations
               </p>
             </CardContent>
@@ -157,7 +157,7 @@ export const HomePage: React.FC = () => {
                 <Star className="h-6 w-6 text-primary" />
               </div>
               <h3 className="mb-2">Quality Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground text-gray-500">
                 Expert-curated questions that mirror real exam patterns
               </p>
             </CardContent>
@@ -170,7 +170,7 @@ export const HomePage: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <h2 className="text-3xl">What Our Students Say</h2>
-            <p className="text-muted-foreground mt-2">
+            <p className="text-muted-foreground text-gray-500 mt-2">
               Join thousands of successful students
             </p>
           </div>
@@ -180,13 +180,13 @@ export const HomePage: React.FC = () => {
                 <CardContent className="pt-6">
                   <div className="mb-4 flex gap-1">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-primary text-black" />
+                      <Star key={i} className="h-4 w-4 text-black fill-black" />
                     ))}
                   </div>
                   <p className="mb-4 text-sm">{testimonial.content}</p>
                   <div>
                     <div>{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                    <div className="text-sm text-muted-foreground text-gray-500">{testimonial.role}</div>
                   </div>
                 </CardContent>
               </Card>
