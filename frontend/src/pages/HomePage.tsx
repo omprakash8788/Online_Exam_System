@@ -205,7 +205,7 @@ export const HomePage: React.FC = () => {
                 Join MockTest today and take the first step towards acing your exams. Sign up now
                 and get access to all our free tests!
               </p>
-              <Button size="lg" onClick={() => setCurrentPage('signup')}>
+              <Button className='bg-black text-white cursor-pointer' size="lg" onClick={() => setCurrentPage('signup')}>
                 Sign Up for Free
               </Button>
             </div>
