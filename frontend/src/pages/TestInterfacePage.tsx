@@ -149,7 +149,7 @@ export const TestInterfacePage: React.FC = () => {
                 {formatTime(timeLeft)}
               </span>
             </div>
-            <Button onClick={() => setShowSubmitDialog(true)} variant="default">
+            <Button className='bg-black text-white' onClick={() => setShowSubmitDialog(true)} variant="default">
               Submit Test
             </Button>
           </div>
