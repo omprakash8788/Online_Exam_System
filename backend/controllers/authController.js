@@ -8,7 +8,6 @@ const createToken = (user) => {
     { expiresIn: '7d' }
   );
 };
-
 const signup = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -52,7 +51,6 @@ const signup = async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 };
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -93,7 +91,6 @@ const login = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params; 
@@ -141,7 +138,6 @@ const updateUser = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
 const getMe = async (req, res) => {
   try {
     if (!req.user) {
@@ -161,7 +157,6 @@ const getMe = async (req, res) => {
     });
   }
 };
-
 const logout = async(req,res) => {
   try{
     res.clearCookie("token",{
@@ -180,7 +175,6 @@ const logout = async(req,res) => {
     })
   }
 }
-
 export default {
   signup, login, updateUser, getMe, logout
 };
