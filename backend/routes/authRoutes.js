@@ -1,18 +1,11 @@
-// const express = require('express');
-import express from "express"
-// const authController = require('../controllers/authController');
-import authController from "../controllers/authController.js"
-import {protect} from "../middleware/verifyToken.js"
-
+import express from "express";
+import authController from "../controllers/authController.js";
+import { protect } from "../middleware/verifyToken.js";
+import { RateLimiter } from "../middleware/rateLimiter.js";
 const router = express.Router();
-
-
-router.post('/signup', authController.signup);
-router.post("/login", authController.login);
+router.post("/signup", RateLimiter, authController.signup);
+router.post("/login", RateLimiter, authController.login);
 router.put("/users/:id", authController.updateUser);
 router.get("/me", protect, authController.getMe);
 router.post("/logout", protect, authController.logout);
-
-
-// module.exports = router;
 export default router;
