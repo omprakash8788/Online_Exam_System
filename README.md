@@ -5,7 +5,6 @@ This application enables users to attempt timed mock tests, track performance, a
 
 --
 ## Project Overview
-
 The Mock Test Web Application is built with a clean separation of concerns between frontend and backend, following industry best practices such as modular architecture, RESTful APIs, JWT-based authentication, and responsive UI design.
 
 This project is suitable for real-world production use and future scalability.
