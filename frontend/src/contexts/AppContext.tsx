@@ -128,16 +128,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       },
       body: JSON.stringify({ email, password }),
     });
-
     const data = await res.json();
-
     if (!res.ok) {
       return { success: false, message: data.message || "Login failed" };
     }
-
     setUser(data.user);
     setCurrentPage("dashboard");
-
     return {
       success: true,
       message: data.message,
@@ -160,13 +156,13 @@ const checkAuth = async() => {
       });
 
       if (!res.ok) throw new Error("Not authenticated");
-
       const data = await res.json();
 
       if(data.success){
         setIsAuthenticated(true);
         setUser(data.user.user);
       }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return {
       success: false,
@@ -191,6 +187,7 @@ const checkAuth = async() => {
           setIsAuthenticated(false);
           setCurrentPage('home');
         }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }catch(error : any){
       return {
         success: false,

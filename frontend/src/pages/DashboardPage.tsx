@@ -10,7 +10,6 @@ import {
   Clock,
   Award,
   BarChart3,
-  Calendar,
   ChevronRight,
 } from 'lucide-react';
 
