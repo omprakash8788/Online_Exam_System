@@ -1,32 +1,36 @@
-import React, { useState } from 'react';
-import { useApp } from '../contexts/AppContext';
-import { TestCard } from '../components/TestCard';
-import { mockTests } from '../data/mockData';
-import { Input } from '../components/ui/input';
-import { Button } from '../components/ui/button';
+import React, { useEffect, useState } from "react";
+import { useApp } from "../contexts/AppContext";
+import { TestCard } from "../components/TestCard";
+// import { mockTests } from '../data/mockData';
+// console.log(mockTests)
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../components/ui/select';
-import { Search, Filter } from 'lucide-react';
+} from "../components/ui/select";
+import { Search, Filter } from "lucide-react";
+import axios from "axios";
 
 export const AllTestsPage: React.FC = () => {
-  const { setCurrentPage, setSelectedTest, user } = useApp();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [difficultyFilter, setDifficultyFilter] = useState<string>('all');
-  const [subjectFilter, setSubjectFilter] = useState<string>('all');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
-
+  const [loading, setLoading] = useState(false);
+  const { setCurrentPage, setSelectedTest, user, mockTests } = useApp();
+  console.log(mockTests);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
+  const [subjectFilter, setSubjectFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleStartTest = (test: any) => {
     if (!user) {
-      setCurrentPage('login');
+      setCurrentPage("login");
       return;
     }
     setSelectedTest(test);
-    setCurrentPage('test-instructions');
+    setCurrentPage("test-instructions");
   };
 
   const filteredTests = mockTests.filter((test) => {
@@ -35,18 +39,21 @@ export const AllTestsPage: React.FC = () => {
       test.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       test.subject.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesDifficulty = difficultyFilter === 'all' || test.difficulty === difficultyFilter;
-    const matchesSubject = subjectFilter === 'all' || test.subject === subjectFilter;
+    const matchesDifficulty =
+      difficultyFilter === "all" || test.difficulty === difficultyFilter;
+    const matchesSubject =
+      subjectFilter === "all" || test.subject === subjectFilter;
     const matchesType =
-      typeFilter === 'all' ||
-      (typeFilter === 'free' && !test.isPaid) ||
-      (typeFilter === 'paid' && test.isPaid);
-
+      typeFilter === "all" ||
+      (typeFilter === "free" && !test.isPaid) ||
+      (typeFilter === "paid" && test.isPaid);
     return matchesSearch && matchesDifficulty && matchesSubject && matchesType;
   });
 
   const subjects = Array.from(new Set(mockTests.map((t) => t.subject)));
-
+  if (loading) {
+    <div>Loading...</div>;
+  }
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -67,19 +74,19 @@ export const AllTestsPage: React.FC = () => {
             className="pl-10 bg-gray-100"
           />
         </div>
-
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm">Filters:</span>
           </div>
-
           <Select value={subjectFilter} onValueChange={setSubjectFilter}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Subject" />
             </SelectTrigger>
-            <SelectContent className='bg-gray-50'>
-              <SelectItem className='bg-gray-100' value="all">All Subjects</SelectItem>
+            <SelectContent className="bg-gray-50">
+              <SelectItem className="bg-gray-100" value="all">
+                All Subjects
+              </SelectItem>
               {subjects.map((subject) => (
                 <SelectItem key={subject} value={subject}>
                   {subject}
@@ -87,39 +94,39 @@ export const AllTestsPage: React.FC = () => {
               ))}
             </SelectContent>
           </Select>
-
           <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Difficulty" />
             </SelectTrigger>
-            <SelectContent className='bg-gray-50'>
+            <SelectContent className="bg-gray-50">
               <SelectItem value="all">All Difficulties</SelectItem>
               <SelectItem value="Easy">Easy</SelectItem>
               <SelectItem value="Medium">Medium</SelectItem>
               <SelectItem value="Hard">Hard</SelectItem>
             </SelectContent>
           </Select>
-
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
-            <SelectContent className='bg-gray-50'>
+            <SelectContent className="bg-gray-50">
               <SelectItem value="all">All Tests</SelectItem>
               <SelectItem value="free">Free</SelectItem>
               <SelectItem value="paid">Pro</SelectItem>
             </SelectContent>
           </Select>
-
-          {(searchQuery || difficultyFilter !== 'all' || subjectFilter !== 'all' || typeFilter !== 'all') && (
+          {(searchQuery ||
+            difficultyFilter !== "all" ||
+            subjectFilter !== "all" ||
+            typeFilter !== "all") && (
             <Button
               variant="ghost"
               size="sm"
               onClick={() => {
-                setSearchQuery('');
-                setDifficultyFilter('all');
-                setSubjectFilter('all');
-                setTypeFilter('all');
+                setSearchQuery("");
+                setDifficultyFilter("all");
+                setSubjectFilter("all");
+                setTypeFilter("all");
               }}
             >
               Clear Filters
@@ -127,18 +134,21 @@ export const AllTestsPage: React.FC = () => {
           )}
         </div>
       </div>
-
       {/* Results */}
       <div className="mb-4 flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''} found
+          {filteredTests.length} test{filteredTests.length !== 1 ? "s" : ""}{" "}
+          found
         </p>
       </div>
-
       {filteredTests.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredTests.map((test) => (
-            <TestCard key={test.id} {...test} onStart={() => handleStartTest(test)} />
+            <TestCard
+              key={test.id}
+              {...test}
+              onStart={() => handleStartTest(test)}
+            />
           ))}
         </div>
       ) : (
@@ -149,16 +159,17 @@ export const AllTestsPage: React.FC = () => {
           <div className="space-y-2">
             <h3>No tests found</h3>
             <p className="text-sm text-muted-foreground">
-              Try adjusting your search or filters to find what you're looking for
+              Try adjusting your search or filters to find what you're looking
+              for
             </p>
           </div>
           <Button
             variant="outline"
             onClick={() => {
-              setSearchQuery('');
-              setDifficultyFilter('all');
-              setSubjectFilter('all');
-              setTypeFilter('all');
+              setSearchQuery("");
+              setDifficultyFilter("all");
+              setSubjectFilter("all");
+              setTypeFilter("all");
             }}
           >
             Clear All Filters
