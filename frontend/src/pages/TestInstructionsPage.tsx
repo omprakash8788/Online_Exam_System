@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -12,7 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '../components/ui/alert-dialog';
-import { mockQuestions } from '../data/mockData';
+// import { mockQuestions } from '../data/mockData';
 import {
   Clock,
   FileQuestion,
@@ -24,8 +25,12 @@ import {
 import { Badge } from '../components/ui/badge';
 
 export const TestInstructionsPage: React.FC = () => {
-  const { selectedTest, setCurrentPage, setCurrentTestQuestions } = useApp();
+  const { selectedTest, setCurrentPage, setCurrentTestQuestions, mockQuestions} = useApp();
   const [showDialog, setShowDialog] = useState(false);
+  // const [mockQuestions, setMockQuestions]=useState([]);
+ console.log(mockQuestions)
+  // /api/questions
+
 
   if (!selectedTest) {
     return (
@@ -35,10 +40,11 @@ export const TestInstructionsPage: React.FC = () => {
     );
   }
 
+
   const handleStartTest = () => {
     // Load questions for the test
-    const questions = mockQuestions[selectedTest.id as keyof typeof mockQuestions] || mockQuestions['1'];
-    setCurrentTestQuestions(questions.map(q => ({ ...q })));
+    const questions = mockQuestions
+   setCurrentTestQuestions(questions.map((q: any) => ({ ...q })));
     setCurrentPage('test-interface');
   };
 

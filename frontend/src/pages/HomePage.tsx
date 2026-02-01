@@ -2,13 +2,13 @@ import React from 'react';
 import { useApp } from '../contexts/AppContext';
 import { Button } from '../components/ui/button';
 import { TestCard } from '../components/TestCard';
-import { mockTests, mockTestimonials } from '../data/mockData';
+import {mockTestimonials } from '../data/mockData';
 import { Card, CardContent } from '../components/ui/card';
 import { Star, BookOpen, Users, Trophy, TrendingUp } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export const HomePage: React.FC = () => {
-  const { setCurrentPage, setSelectedTest, user } = useApp();
+  const { setCurrentPage, setSelectedTest, user, mockTests } = useApp();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleStartTest = (test: any) => {
