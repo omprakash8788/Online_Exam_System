@@ -18,6 +18,21 @@ export const uploadQuestions = async (req, res) => {
   }
 };
 
+export const getAllQuestions = async (req, res) => {
+  try {
+    const questions = await Question.find();
+
+    res.status(200).json({
+      success: true,
+      count: questions.length,
+      questions,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 // GET QUESTIONS BY TEST ID
 export const getQuestionsByTestId = async (req, res) => {
   try {

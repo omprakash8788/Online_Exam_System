@@ -74,6 +74,7 @@ interface AppContextType {
   mockTests: Test[];
   loading: boolean;
   fetchAllTests: () => Promise<void>;
+  fetchQuestion:()=>Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -102,22 +103,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [mockTests, setMockTests] = useState<Test[]>([]);
-  console.log(mockTests)
+  // console.log(mockTests)
+  const [mockQuestions, setMockQuestions] = useState([]);
+  console.log(mockQuestions)
   const [loading, setLoading] = useState(false);
-   const fetchAllTests = async () => {
+  const fetchAllTests = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/tests`);
-      setMockTests(res.data.data); 
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/tests`,
+      );
+      setMockTests(res.data.data);
     } catch (error) {
       console.error("Failed to fetch tests", error);
     } finally {
       setLoading(false);
     }
   };
-  
-  useEffect(()=>{
-    fetchAllTests()
-  },[])
+
+  useEffect(() => {
+    fetchAllTests();
+  }, []);
+
+  const fetchQuestion = async () => {
+    try {
+      const questions = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/questions`
+      );
+      setMockQuestions(questions.data.questions)
+      // console.log(questions.data.questions);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestion();
+  }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
@@ -306,6 +327,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         testResults,
         addTestResult,
         mockTests,
+        mockQuestions
+        
       }}
     >
       {children}
