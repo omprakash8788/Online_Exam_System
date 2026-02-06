@@ -36,6 +36,7 @@ import { toast } from 'sonner';
 
 export const AdminPanel: React.FC = () => {
   const { user } = useApp();
+  console.log("i am from admin panel", user)
   const [selectedTab, setSelectedTab] = useState('overview');
   const [showAddTest, setShowAddTest] = useState(false);
 
@@ -79,11 +80,11 @@ export const AdminPanel: React.FC = () => {
       </div>
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-        <TabsList className="mb-8">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="tests">Manage Tests</TabsTrigger>
-          <TabsTrigger value="users">Manage Users</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <TabsList className="mb-8"> 
+          <TabsTrigger className={`${selectedTab === "overview" ? 'bg-black text-white' :''}`} value="overview">Overview</TabsTrigger>
+          <TabsTrigger className={`${selectedTab === "tests" ? 'bg-black text-white' :''}`} value="tests">Manage Tests</TabsTrigger>
+          <TabsTrigger className={`${selectedTab === "users" ? 'bg-black text-white' :''}`} value="users">Manage Users</TabsTrigger>
+          <TabsTrigger className={`${selectedTab === "analytics" ? 'bg-black text-white' :''}`} value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}

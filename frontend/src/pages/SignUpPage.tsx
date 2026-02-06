@@ -17,6 +17,7 @@ export const SignUpPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState<'student' | 'admin'>('student');
+  console.log(role)
 
   // const handleSubmit = (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -74,9 +75,7 @@ export const SignUpPage: React.FC = () => {
   const handleGoogleSignup = () => {
     signup('Google User', 'user@gmail.com', 'password', 'student');
     toast.success('Signed up with Google!');
-  };
-
-  
+  };  
   return (
     <div className="container mx-auto flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-8">
       <Card className="w-full max-w-md">
