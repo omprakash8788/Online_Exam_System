@@ -121,7 +121,6 @@ export const AdminPanel: React.FC = () => {
                 <p className="text-xs text-muted-foreground">This month</p>
               </CardContent>
             </Card>
-
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm">Avg. Score</CardTitle>
