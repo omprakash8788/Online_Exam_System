@@ -74,7 +74,10 @@ interface AppContextType {
   mockTests: Test[];
   loading: boolean;
   fetchAllTests: () => Promise<void>;
-  fetchQuestion:()=>Promise<void>;
+  fetchQuestion: () => Promise<void>;
+  users: User[] | null;
+  setUsers: () => void;
+  getAllUsers: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -105,6 +108,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [mockTests, setMockTests] = useState<Test[]>([]);
   // console.log(mockTests)
   const [mockQuestions, setMockQuestions] = useState([]);
+  const [users, setUsers] = useState<User[] | null>(null);
+  console.log("usererree",users)
   console.log(mockQuestions)
   const [loading, setLoading] = useState(false);
   const fetchAllTests = async () => {
@@ -296,6 +301,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const getAllUsers = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/get-all-users`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { success: false, message: data.message || "user data fetching failed" };
+      }
+      if (data.success) {
+        setUsers(data?.data);
+      }
+    } catch (error) {
+      return { success: false, message: error || "user data fetching failed" };
+    }
+  }
+
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
@@ -327,8 +357,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         testResults,
         addTestResult,
         mockTests,
-        mockQuestions
-        
+        mockQuestions,
+        users,
+        getAllUsers
+
       }}
     >
       {children}

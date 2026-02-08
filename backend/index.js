@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 // import testRoutes from "./routes/testRoutes.js";
 import testRoutes from './routes/testRoutes.js';
 import questionRoutes from './routes/questionRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 // import questionRoutes from "./routes/questionRoutes.js";
 const app = express();
 const port = process.env.PORT
@@ -25,4 +26,6 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/tests", testRoutes);
 app.use("/api/questions", questionRoutes);
+app.use("/api/users", userRoutes);
+
 app.listen(port, () => console.log("Server running on port: " + port));
