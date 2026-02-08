@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -35,10 +35,11 @@ import {
 import { toast } from 'sonner';
 
 export const AdminPanel: React.FC = () => {
-  const { user } = useApp();
-  console.log("i am from admin panel", user)
+  const { user, users, getAllUsers } = useApp();
+
   const [selectedTab, setSelectedTab] = useState('overview');
   const [showAddTest, setShowAddTest] = useState(false);
+
 
   if (!user || user.role !== 'admin') {
     return (
@@ -72,6 +73,10 @@ export const AdminPanel: React.FC = () => {
     { id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'student', tests: 3 },
   ];
 
+  useEffect(() => {
+    getAllUsers();
+  }, [])
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -80,11 +85,11 @@ export const AdminPanel: React.FC = () => {
       </div>
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-        <TabsList className="mb-8"> 
-          <TabsTrigger className={`${selectedTab === "overview" ? 'bg-black text-white' :''}`} value="overview">Overview</TabsTrigger>
-          <TabsTrigger className={`${selectedTab === "tests" ? 'bg-black text-white' :''}`} value="tests">Manage Tests</TabsTrigger>
-          <TabsTrigger className={`${selectedTab === "users" ? 'bg-black text-white' :''}`} value="users">Manage Users</TabsTrigger>
-          <TabsTrigger className={`${selectedTab === "analytics" ? 'bg-black text-white' :''}`} value="analytics">Analytics</TabsTrigger>
+        <TabsList className="mb-8">
+          <TabsTrigger className={`${selectedTab === "overview" ? 'bg-black text-white' : ''}`} value="overview">Overview</TabsTrigger>
+          <TabsTrigger className={`${selectedTab === "tests" ? 'bg-black text-white' : ''}`} value="tests">Manage Tests</TabsTrigger>
+          <TabsTrigger className={`${selectedTab === "users" ? 'bg-black text-white' : ''}`} value="users">Manage Users</TabsTrigger>
+          <TabsTrigger className={`${selectedTab === "analytics" ? 'bg-black text-white' : ''}`} value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -257,8 +262,8 @@ export const AdminPanel: React.FC = () => {
                             test.difficulty === 'Easy'
                               ? 'bg-green-500/10 text-green-500 border-green-500/20'
                               : test.difficulty === 'Medium'
-                              ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
-                              : 'bg-red-500/10 text-red-500 border-red-500/20'
+                                ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
+                                : 'bg-red-500/10 text-red-500 border-red-500/20'
                           }
                         >
                           {test.difficulty}
@@ -312,7 +317,7 @@ export const AdminPanel: React.FC = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockUsers.map((user) => (
+                  {users?.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell>{user.name}</TableCell>
                       <TableCell>{user.email}</TableCell>
