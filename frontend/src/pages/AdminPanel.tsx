@@ -34,12 +34,31 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
+interface IQuestions {
+  title: string;
+  correctAnswers: number;
+  options: string[];
+}
 export const AdminPanel: React.FC = () => {
   const { user, users, getAllUsers } = useApp();
 
   const [selectedTab, setSelectedTab] = useState('overview');
   const [showAddTest, setShowAddTest] = useState(false);
+  const [test, setTest] = useState({
+    title: "",
+    subject: "",
+    description: "",
+    difficulty: "",
+    duration: "",
+    totalQuestions: 0,
+    questions: ""
+  });
 
+  const handleChange = (e: any) => {
+    setTest({ ...test, [e.target.name]: e.target.value })
+  }
+
+  const [jsonError, setJsonError] = useState("");
 
   if (!user || user.role !== 'admin') {
     return (
@@ -54,9 +73,18 @@ export const AdminPanel: React.FC = () => {
     );
   }
 
-  const handleAddTest = () => {
-    toast.success('Test added successfully!');
-    setShowAddTest(false);
+  const handleAddTest = (e) => {
+    e.preventDefault();
+    try {
+      setJsonError("");
+
+      // setTest({}); // clear input after push
+      toast.success('Test added successfully!');
+      setShowAddTest(false);
+    } catch (err:any) {
+      setJsonError(err.message || "Invalid JSON format");
+    }
+
   };
 
   const handleEditTest = (testId: string) => {
@@ -67,11 +95,12 @@ export const AdminPanel: React.FC = () => {
     toast.success('Test deleted successfully!');
   };
 
-  const mockUsers = [
-    { id: '1', name: 'John Doe', email: 'john@example.com', role: 'student', tests: 5 },
-    { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'student', tests: 8 },
-    { id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'student', tests: 3 },
-  ];
+  // const mockUsers = [
+  //   { id: '1', name: 'John Doe', email: 'john@example.com', role: 'student', tests: 5 },
+  //   { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'student', tests: 8 },
+  //   { id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'student', tests: 3 },
+  // ];
+
 
   useEffect(() => {
     getAllUsers();
@@ -189,51 +218,81 @@ export const AdminPanel: React.FC = () => {
               <CardHeader>
                 <CardTitle>Add New Test</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Test Title</Label>
-                    <Input id="title" placeholder="e.g., React.js Advanced" />
+              <form onSubmit={handleAddTest}>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Test Title</Label>
+                      <Input id="title" name="title" value={test.title} onChange={handleChange} placeholder="e.g., React.js Advanced" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="subject">Subject</Label>
+                      <Input id="subject" name="subject" value={test.subject} onChange={handleChange} placeholder="e.g., React" />
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" placeholder="e.g., React" />
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea id="description" name="description" value={test.description} onChange={handleChange} placeholder="Test description..." />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea id="description" placeholder="Test description..." />
-                </div>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="difficulty">Difficulty</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select difficulty" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="easy">Easy</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="hard">Hard</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <div className="space-y-2">
+                      <Label htmlFor="difficulty">Difficulty</Label>
+                      <Select name="difficulty" value={test.difficulty} onValueChange={(value) =>
+                        setTest((prev) => ({
+                          ...prev,
+                          difficulty: value,
+                        }))
+                      }>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select difficulty" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="easy">Easy</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="hard">Hard</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="duration">Duration (min)</Label>
+                      <Input id="duration" name="duration" value={test.duration} onChange={handleChange} type="number" placeholder="30" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="questions">Total Questions</Label>
+                      <Input id="questions" name="totalQuestions" value={test.totalQuestions} onChange={handleChange} type="number" placeholder="20" />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="duration">Duration (min)</Label>
-                    <Input id="duration" type="number" placeholder="30" />
+                  <p className='border-b text-center py-2 border-t  border-b-gray-400 text-xl'>Add Question Section</p>
+                  <div className="border p-4 rounded-lg space-y-3 mb-6">
+                    <Label>Paste Questions JSON</Label>
+
+                    <textarea
+                      className="w-full h-40 border p-2 rounded-md font-mono text-sm"
+                      placeholder={`[
+                      {
+                        "title": "What is React?",
+                        "correctAnswer": 1,
+                        "options": ["Library","Framework","Language"]
+                      }
+                    ]`}
+                      name="questions"
+                      value={test.questions}
+                      onChange={handleChange}
+                    />
+
+                    {jsonError && (
+                      <p className="text-red-600 text-sm">{jsonError}</p>
+                    )}
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="questions">Total Questions</Label>
-                    <Input id="questions" type="number" placeholder="20" />
+
+                  <div className="flex gap-2">
+                    <Button type="submit">Add Test</Button>
+                    <Button variant="outline" onClick={() => setShowAddTest(false)}>
+                      Cancel
+                    </Button>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button onClick={handleAddTest}>Add Test</Button>
-                  <Button variant="outline" onClick={() => setShowAddTest(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              </CardContent>
+                </CardContent>
+              </form>
             </Card>
           )}
 
