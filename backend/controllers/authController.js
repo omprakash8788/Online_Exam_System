@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 
 const createToken = (user) => {
   return jwt.sign(
-    { id: user._id },
+    { id: user._id ,user},
     process.env.JWT_SECRET,
     { expiresIn: "7d" }
   );
@@ -142,6 +142,7 @@ const updateUser = async (req, res) => {
 };
 const getMe = async (req, res) => {
   try {
+    console.log(req.user)
     if (!req.user) {
       return res.status(401).json({
         success: false,
