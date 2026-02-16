@@ -3,11 +3,13 @@ import jwt from "jsonwebtoken"
 
 const createToken = (user) => {
   return jwt.sign(
-    {user},
+    { id: user._id },
     process.env.JWT_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: "7d" }
   );
 };
+
+
 const signup = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;

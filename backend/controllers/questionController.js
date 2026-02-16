@@ -1,4 +1,8 @@
 import Question from "../models/Question.js";
+import MockTest from "../models/MockTest.js"
+import Test from "../models/Test.js";
+
+
 
 // UPLOAD QUESTIONS (BULK)
 export const uploadQuestions = async (req, res) => {
@@ -20,7 +24,7 @@ export const uploadQuestions = async (req, res) => {
 
 export const getAllQuestions = async (req, res) => {
   try {
-    const questions = await Question.find();
+    const questions = await MockTest.find();
 
     res.status(200).json({
       success: true,
@@ -31,6 +35,41 @@ export const getAllQuestions = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getPublicTestQuestions = async (req, res) => {
+  try {
+    const testId = req.params.id;
+
+    // 1️⃣ Find test
+    const test = await Test.findById(testId)
+      .select("title description duration totalMarks")
+      .populate({
+        path: "questions",
+        select: "question options marks correctAnswer", // ❌ correctAnswer NOT sent
+      });
+
+    if (!test) {
+      return res.status(404).json({
+        success: false,
+        message: "Test not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: test,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+
 
 
 // GET QUESTIONS BY TEST ID

@@ -78,7 +78,7 @@ export const mockQuestions = {
         'To create custom hooks',
         'To optimize rendering performance',
       ],
-      correctAnswer: 1,
+      correctAnswer: 1, 
     },
     {
       id: 'q2',
