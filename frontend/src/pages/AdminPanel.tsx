@@ -34,11 +34,6 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface IQuestions {
-  title: string;
-  correctAnswers: number;
-  options: string[];
-}
 export const AdminPanel: React.FC = () => {
   const { user, users, getAllUsers } = useApp();
 
