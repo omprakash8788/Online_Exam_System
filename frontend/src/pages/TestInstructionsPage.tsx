@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
+import axios from 'axios';
+
 import { useApp } from '../contexts/AppContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -25,10 +27,12 @@ import {
 import { Badge } from '../components/ui/badge';
 
 export const TestInstructionsPage: React.FC = () => {
-  const { selectedTest, setCurrentPage, setCurrentTestQuestions, mockQuestions} = useApp();
+  // const { selectedTest, setCurrentPage, setCurrentTestQuestions, mockQuestions} = useApp();
+  const { selectedTest, setCurrentPage, setCurrentTestQuestions } = useApp();
+
   const [showDialog, setShowDialog] = useState(false);
   // const [mockQuestions, setMockQuestions]=useState([]);
- console.log(mockQuestions)
+//  console.log(mockQuestions)
   // /api/questions
 
 
@@ -41,12 +45,30 @@ export const TestInstructionsPage: React.FC = () => {
   }
 
 
-  const handleStartTest = () => {
-    // Load questions for the test
-    const questions = mockQuestions
-   setCurrentTestQuestions(questions.map((q: any) => ({ ...q })));
+  // const handleStartTest = () => {
+  //   // Load questions for the test
+  //   const questions = mockQuestions
+  //  setCurrentTestQuestions(questions.map((q: any) => ({ ...q })));
+  //   setCurrentPage('test-interface');
+  // };
+
+  const handleStartTest = async () => {
+  if (!selectedTest?._id) return;
+
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/questions/tests/${selectedTest._id}/public`
+    );
+
+    setCurrentTestQuestions(res.data.data.questions);
     setCurrentPage('test-interface');
-  };
+
+  } catch (error) {
+    console.error("Failed to load questions", error);
+    alert("Failed to load questions. Please try again.");
+  }
+};
+
 
   const difficultyColors = {
     Easy: 'bg-green-500/10 text-green-500 border-green-500/20',

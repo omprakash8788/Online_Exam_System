@@ -21,6 +21,7 @@ import { Clock, Flag, CheckCircle2 } from 'lucide-react';
 
 export const TestInterfacePage: React.FC = () => {
   const { selectedTest, currentTestQuestions, setCurrentTestQuestions, setCurrentPage, addTestResult } = useApp();
+  console.log(selectedTest)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(selectedTest ? selectedTest.duration * 60 : 0);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
@@ -83,7 +84,7 @@ export const TestInterfacePage: React.FC = () => {
 
   const handleQuestionJump = (index: number) => {
     setCurrentQuestionIndex(index);
-  };
+  }; 
 
   const handleSubmitTest = () => {
     const correctAnswers = currentTestQuestions.filter(
@@ -100,10 +101,9 @@ export const TestInterfacePage: React.FC = () => {
       wrongAnswers * selectedTest.markingScheme.wrong;
     const maxScore = totalQuestions * selectedTest.markingScheme.correct;
     const percentage = Math.max(0, Math.round((score / maxScore) * 100));
-
     const result = {
       id: Date.now().toString(),
-      testId: selectedTest.id,
+      testId: selectedTest._id,
       testTitle: selectedTest.title,
       totalQuestions,
       attempted: answeredCount,

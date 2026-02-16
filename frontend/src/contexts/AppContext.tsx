@@ -10,7 +10,7 @@ interface User {
 }
 
 interface Test {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   subject: string;
@@ -108,10 +108,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [mockTests, setMockTests] = useState<Test[]>([]);
   // console.log(mockTests)
   const [mockQuestions, setMockQuestions] = useState([]);
+  console.log(mockQuestions)
   const [users, setUsers] = useState<User[] | null>(null);
   console.log("usererree",users)
-  console.log(mockQuestions)
   const [loading, setLoading] = useState(false);
+  
   const fetchAllTests = async () => {
     try {
       const res = await axios.get(
@@ -129,21 +130,53 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchAllTests();
   }, []);
 
-  const fetchQuestion = async () => {
-    try {
-      const questions = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/questions`
-      );
-      setMockQuestions(questions.data.questions)
-      // console.log(questions.data.questions);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchQuestion = async () => {
+  //   try {
+  //      setLoading(true);
+  //     // const questions = await axios.get(
+  //     //   `${import.meta.env.VITE_BACKEND_URL}/api/questions`
+  //     // );
+  //      const questions = await axios.get(
+  //     `${import.meta.env.VITE_BACKEND_URL}/api/questions/tests/${mockQuestions.id}/public`
+  //   );
+  //     setMockQuestions(questions.data.data.questions)
+  //     // console.log(questions.data.questions);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
+  const fetchQuestion = async () => {
+  if (!selectedTest?._id) {
+    console.warn("No test selected yet");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const res = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/questions/tests/${selectedTest._id}/public`
+    );
+
+    setCurrentTestQuestions(res.data.data.questions);
+
+  } catch (error) {
+    console.error("Failed to fetch questions", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  if (selectedTest) {
     fetchQuestion();
-  }, []);
+  }
+}, [selectedTest]);
+
+  // useEffect(() => {
+  //   fetchQuestion();
+  // }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
