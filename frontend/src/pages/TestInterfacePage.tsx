@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
 } from '../components/ui/alert-dialog';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Clock, Flag, CheckCircle2 } from 'lucide-react';
+import { Clock, Flag } from 'lucide-react';
 
 export const TestInterfacePage: React.FC = () => {
   const { selectedTest, currentTestQuestions, setCurrentTestQuestions, setCurrentPage, addTestResult } = useApp();
@@ -94,7 +94,7 @@ export const TestInterfacePage: React.FC = () => {
       (q) => q.selectedAnswer !== undefined && q.selectedAnswer !== q.correctAnswer
     ).length;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const unattempted = totalQuestions - answeredCount;
+    // const unattempted = totalQuestions - answeredCount;
 
     const score =
       correctAnswers * selectedTest.markingScheme.correct +

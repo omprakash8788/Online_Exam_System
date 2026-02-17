@@ -22,7 +22,7 @@ interface Test {
 }
 
 interface Question {
-  id: string;
+  _id: string;
   question: string;
   options: string[];
   correctAnswer: number;
@@ -45,40 +45,50 @@ interface TestResult {
 
 interface AppContextType {
   user: User | null;
-  // login: (email: string, password: string, role?: 'student' | 'admin') => void;
+
   login: (
     email: string,
     password: string,
   ) => Promise<{ success: boolean; message: string; user?: User }>;
 
   logout: () => void;
-  // signup: (name: string, email: string, password: string, role: 'student' | 'admin') => void;
+
   signup: (
     name: string,
     email: string,
     password: string,
     role: "student" | "admin",
   ) => Promise<{ success: boolean; message: string }>;
+
   theme: "light" | "dark";
   toggleTheme: () => void;
+
   currentPage: string;
   setCurrentPage: (page: string) => void;
+
   selectedTest: Test | null;
   setSelectedTest: (test: Test | null) => void;
+
   currentTestQuestions: Question[];
   setCurrentTestQuestions: (questions: Question[]) => void;
+
   testResults: TestResult[];
-  checkAuth: () => void;
-  isAuthenticated: boolean;
   addTestResult: (result: TestResult) => void;
+
   mockTests: Test[];
+
   loading: boolean;
   fetchAllTests: () => Promise<void>;
   fetchQuestion: () => Promise<void>;
+
   users: User[] | null;
-  setUsers: () => void;
-  getAllUsers: () => Promise<void>;
+  setUsers: React.Dispatch<React.SetStateAction<User[] | null>>;
+  getAllUsers: () => void;
+
+  checkAuth: () => void;
+  isAuthenticated: boolean;
 }
+
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -107,12 +117,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [mockTests, setMockTests] = useState<Test[]>([]);
   // console.log(mockTests)
-  const [mockQuestions, setMockQuestions] = useState([]);
-  console.log(mockQuestions)
+  // const [mockQuestions, setMockQuestions] = useState([]);
+  // console.log(mockQuestions)
   const [users, setUsers] = useState<User[] | null>(null);
-  console.log("usererree",users)
+
   const [loading, setLoading] = useState(false);
-  
+
   const fetchAllTests = async () => {
     try {
       const res = await axios.get(
@@ -147,32 +157,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   // };
 
   const fetchQuestion = async () => {
-  if (!selectedTest?._id) {
-    console.warn("No test selected yet");
-    return;
-  }
+    if (!selectedTest?._id) {
+      console.warn("No test selected yet");
+      return;
+    }
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const res = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/questions/tests/${selectedTest._id}/public`
-    );
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/questions/tests/${selectedTest._id}/public`
+      );
 
-    setCurrentTestQuestions(res.data.data.questions);
+      setCurrentTestQuestions(res.data.data.questions);
 
-  } catch (error) {
-    console.error("Failed to fetch questions", error);
-  } finally {
-    setLoading(false);
-  }
-};
+    } catch (error) {
+      console.error("Failed to fetch questions", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-useEffect(() => {
-  if (selectedTest) {
-    fetchQuestion();
-  }
-}, [selectedTest]);
+  useEffect(() => {
+    if (selectedTest) {
+      fetchQuestion();
+    }
+  }, [selectedTest]);
 
   // useEffect(() => {
   //   fetchQuestion();
@@ -370,6 +380,10 @@ useEffect(() => {
     setTestResults((prev) => [result, ...prev]);
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -390,9 +404,13 @@ useEffect(() => {
         testResults,
         addTestResult,
         mockTests,
-        mockQuestions,
+        // mockQuestions,
         users,
-        getAllUsers
+        getAllUsers,
+        loading,
+        fetchAllTests,
+        fetchQuestion,
+        setUsers,
 
       }}
     >

@@ -68,7 +68,7 @@ export const AdminPanel: React.FC = () => {
     );
   }
 
-  const handleAddTest = (e) => {
+  const handleAddTest = (e:any) => {
     e.preventDefault();
     try {
       setJsonError("");
@@ -83,10 +83,12 @@ export const AdminPanel: React.FC = () => {
   };
 
   const handleEditTest = (testId: string) => {
+    console.log(testId)
     toast.info('Edit test functionality coming soon!');
   };
 
   const handleDeleteTest = (testId: string) => {
+    console.log(testId)
     toast.success('Test deleted successfully!');
   };
 
@@ -306,7 +308,7 @@ export const AdminPanel: React.FC = () => {
                 </TableHeader>
                 <TableBody>
                   {mockTests.map((test) => (
-                    <TableRow key={test.id}>
+                    <TableRow key={test?._id}>
                       <TableCell>{test.title}</TableCell>
                       <TableCell>{test.subject}</TableCell>
                       <TableCell>
@@ -330,14 +332,14 @@ export const AdminPanel: React.FC = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleEditTest(test.id)}
+                            onClick={() => handleEditTest(test?._id)}
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDeleteTest(test.id)}
+                            onClick={() => handleDeleteTest(test?._id)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -378,7 +380,8 @@ export const AdminPanel: React.FC = () => {
                       <TableCell>
                         <Badge variant="secondary">{user.role}</Badge>
                       </TableCell>
-                      <TableCell>{user.tests}</TableCell>
+                      {/* <TableCell>{user.tests}</TableCell> */}
+                      <TableCell>{""}</TableCell>
                       <TableCell className="text-right">
                         <Button variant="ghost" size="sm">
                           View Details
@@ -407,7 +410,7 @@ export const AdminPanel: React.FC = () => {
               <CardContent>
                 <div className="space-y-3">
                   {mockTests.slice(0, 5).map((test, index) => (
-                    <div key={test.id} className="flex items-center justify-between">
+                    <div key={test?._id} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
                           {index + 1}
@@ -430,7 +433,7 @@ export const AdminPanel: React.FC = () => {
               <CardContent>
                 <div className="space-y-3">
                   {mockTests.slice(0, 5).map((test) => (
-                    <div key={test.id} className="space-y-1">
+                    <div key={test?._id} className="space-y-1">
                       <div className="flex items-center justify-between text-sm">
                         <span className="line-clamp-1">{test.title}</span>
                         <span>{Math.floor(Math.random() * 30 + 60)}%</span>

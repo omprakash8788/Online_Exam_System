@@ -100,7 +100,7 @@ export const HomePage: React.FC = () => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {mockTests.slice(0, 3).map((test) => (
               <TestCard
-                key={test.id}
+                key={test?._id}
                 {...test}
                 onStart={() => handleStartTest(test)}
               />
@@ -176,7 +176,7 @@ export const HomePage: React.FC = () => {
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {mockTestimonials.map((testimonial) => (
-              <Card key={testimonial.id}>
+              <Card key={testimonial?._id}>
                 <CardContent className="pt-6">
                   <div className="mb-4 flex gap-1">
                     {[...Array(testimonial.rating)].map((_, i) => (

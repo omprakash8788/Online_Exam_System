@@ -1,6 +1,6 @@
 export const mockTests = [
   {
-    id: '1',
+    _id: '1',
     title: 'React.js Fundamentals',
     description: 'Test your knowledge of React basics, hooks, and component lifecycle',
     subject: 'React',
@@ -11,7 +11,7 @@ export const mockTests = [
     isPaid: false,
   },
   {
-    id: '2',
+    _id: '2',
     title: 'JavaScript ES6+ Features',
     description: 'Master modern JavaScript including arrow functions, promises, async/await',
     subject: 'JavaScript',
@@ -22,7 +22,7 @@ export const mockTests = [
     isPaid: false,
   },
   {
-    id: '3',
+    _id: '3',
     title: 'Node.js Backend Development',
     description: 'Advanced Node.js concepts, Express, middleware, and REST APIs',
     subject: 'Node.js',
@@ -33,7 +33,7 @@ export const mockTests = [
     isPaid: true,
   },
   {
-    id: '4',
+    _id: '4',
     title: 'TypeScript Advanced Types',
     description: 'Deep dive into TypeScript generics, utility types, and advanced patterns',
     subject: 'TypeScript',
@@ -44,7 +44,7 @@ export const mockTests = [
     isPaid: true,
   },
   {
-    id: '5',
+    _id: '5',
     title: 'HTML & CSS Basics',
     description: 'Foundation of web development with HTML5 and CSS3',
     subject: 'Web Development',
@@ -55,7 +55,7 @@ export const mockTests = [
     isPaid: false,
   },
   {
-    id: '6',
+    _id: '6',
     title: 'Database Design & SQL',
     description: 'Relational databases, normalization, and SQL queries',
     subject: 'Database',
@@ -70,7 +70,7 @@ export const mockTests = [
 export const mockQuestions = {
   '1': [
     {
-      id: 'q1',
+      _id: 'q1',
       question: 'What is the purpose of useEffect hook in React?',
       options: [
         'To manage component state',
@@ -81,25 +81,25 @@ export const mockQuestions = {
       correctAnswer: 1, 
     },
     {
-      id: 'q2',
+      _id: 'q2',
       question: 'Which method is used to update state in React class components?',
       options: ['updateState()', 'setState()', 'changeState()', 'modifyState()'],
       correctAnswer: 1,
     },
     {
-      id: 'q3',
+      _id: 'q3',
       question: 'What does JSX stand for?',
       options: ['JavaScript XML', 'Java Syntax Extension', 'JavaScript Extension', 'Java XML'],
       correctAnswer: 0,
     },
     {
-      id: 'q4',
+      _id: 'q4',
       question: 'Which hook is used to access context in functional components?',
       options: ['useContext', 'useReducer', 'useState', 'useMemo'],
       correctAnswer: 0,
     },
     {
-      id: 'q5',
+      _id: 'q5',
       question: 'What is the virtual DOM?',
       options: [
         'A physical representation of the DOM',
@@ -112,7 +112,7 @@ export const mockQuestions = {
   ],
   '2': [
     {
-      id: 'q1',
+      _id: 'q1',
       question: 'What does the spread operator (...) do in JavaScript?',
       options: [
         'Multiplies numbers',
@@ -123,13 +123,13 @@ export const mockQuestions = {
       correctAnswer: 1,
     },
     {
-      id: 'q2',
+      _id: 'q2',
       question: 'Which of the following is NOT a JavaScript data type?',
       options: ['String', 'Boolean', 'Float', 'Symbol'],
       correctAnswer: 2,
     },
     {
-      id: 'q3',
+      _id: 'q3',
       question: 'What is a Promise in JavaScript?',
       options: [
         'A synchronous operation',
@@ -144,21 +144,21 @@ export const mockQuestions = {
 
 export const mockTestimonials = [
   {
-    id: '1',
+    _id: '1',
     name: 'Sarah Johnson',
     role: 'Computer Science Student',
     content: 'This platform helped me ace my JavaScript interview! The mock tests are incredibly realistic.',
     rating: 5,
   },
   {
-    id: '2',
+    _id: '2',
     name: 'Michael Chen',
     role: 'Web Developer',
     content: 'Best practice tests I have found online. The detailed explanations really help understand concepts.',
     rating: 5,
   },
   {
-    id: '3',
+    _id: '3',
     name: 'Emily Rodriguez',
     role: 'Software Engineer',
     content: 'The progress tracking and analytics are amazing. I can see exactly where I need to improve.',

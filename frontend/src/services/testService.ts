@@ -5,7 +5,7 @@ export const fetchAllTests = async () => {
   return res.data.data;
 };
 
-export const createTest = async (testData) => {
+export const createTest = async (testData:any) => {
   const res = await API.post("/tests", testData);
   return res.data.data;
 };

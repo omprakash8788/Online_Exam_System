@@ -139,7 +139,7 @@ export const DashboardPage: React.FC = () => {
             <CardContent>
               <div className="space-y-4">
                 {recommendedTests.map((test) => (
-                  <div key={test.id} className="border-b pb-4 last:border-0 last:pb-0">
+                  <div key={test?._id} className="border-b pb-4 last:border-0 last:pb-0">
                     <div className="space-y-2">
                       <p className="line-clamp-1">{test.title}</p>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
