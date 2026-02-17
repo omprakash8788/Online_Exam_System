@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 export const TestResultPage: React.FC = () => {
-  const { testResults, selectedTest, currentTestQuestions, setCurrentPage, setSelectedTest } = useApp();
+  const { testResults, selectedTest, currentTestQuestions, setCurrentPage } = useApp();
 
   if (testResults.length === 0 || !selectedTest) {
     return (
@@ -192,7 +192,7 @@ export const TestResultPage: React.FC = () => {
 
                 return (
                   <div
-                    key={question.id}
+                    key={question?._id}
                     className="flex items-start gap-3 rounded-lg border p-4"
                   >
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted shrink-0">
@@ -216,7 +216,7 @@ export const TestResultPage: React.FC = () => {
                             {!isCorrect && (
                               <>
                                 <Badge variant="outline">
-                                  Your Answer: {question.options[question.selectedAnswer]}
+                                  Your Answer:  { question?.selectedAnswer  ? question.options[question?.selectedAnswer] : ""}
                                 </Badge>
                                 <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
                                   Correct: {question.options[question.correctAnswer]}

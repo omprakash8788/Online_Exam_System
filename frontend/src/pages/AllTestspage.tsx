@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useApp } from "../contexts/AppContext";
 import { TestCard } from "../components/TestCard";
 // import { mockTests } from '../data/mockData';
@@ -28,6 +28,7 @@ export const AllTestsPage: React.FC = () => {
       setCurrentPage("login");
       return;
     }
+    setLoading(false);
     setSelectedTest(test);
     setCurrentPage("test-instructions");
   };
@@ -144,7 +145,7 @@ export const AllTestsPage: React.FC = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredTests.map((test) => (
             <TestCard
-              key={test.id}
+              key={test?._id}
               {...test}
               onStart={() => handleStartTest(test)}
             />

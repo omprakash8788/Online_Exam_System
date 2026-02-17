@@ -5,7 +5,7 @@ import { Badge } from './ui/badge';
 import { Clock, FileQuestion, Award } from 'lucide-react';
 
 interface TestCardProps {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
