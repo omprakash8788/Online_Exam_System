@@ -4,6 +4,7 @@ A scalable, secure, and responsive Mock Test / Online Examination Platform desig
 This application enables users to attempt timed mock tests, track performance, and view detailed results, while providing admins full control over test and question management.
 
 
+
 --
 ## Project Overview
 The Mock Test Web Application is built with a clean separation of concerns between frontend and backend, following industry best practices such as modular architecture, RESTful APIs, JWT-based authentication, and responsive UI design.
